@@ -9,16 +9,24 @@ type ChatMessage = {
 };
 
 type SuggestedMethod = {
+  methodType: keyof typeof Pricing.credit_costs | string;
+  methodName: string;
+  callRate: number;
+  callFrequency: "minute" | "day";
+  mb?: number | null | undefined;
+};
+
+type NormalizedSuggestedMethod = {
   methodType: keyof typeof Pricing.credit_costs;
   methodName: string;
   callRate: number;
   callFrequency: "minute" | "day";
-  mb?: number | null;
+  mb: number | null;
 };
 
 const OPENAI_CHAT_API_URL = "https://api.openai.com/v1/chat/completions";
 const OPENAI_RESPONSES_API_URL = "https://api.openai.com/v1/responses";
-const DEFAULT_MODEL = "gpt-4.1-mini";
+const DEFAULT_MODEL = "gpt-5-mini-2025-08-07";
 const MAX_SOURCES = 6;
 const MAX_SOURCE_CHARS = 1800;
 
@@ -334,7 +342,7 @@ export async function POST(request: Request) {
             mb,
           };
         })
-        .filter((suggestion): suggestion is SuggestedMethod => Boolean(suggestion))
+        .filter((suggestion): suggestion is NormalizedSuggestedMethod => Boolean(suggestion))
     : [];
 
   return NextResponse.json({

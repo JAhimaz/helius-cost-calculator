@@ -43,6 +43,7 @@ type SuggestionResponse = {
   suggested_methods: SuggestedMethod[];
   sources_used: string[];
   replace_existing_methods?: boolean;
+  error?: string;
 };
 
 type SuggestedMethod = {
@@ -50,7 +51,7 @@ type SuggestedMethod = {
   methodName: string;
   callRate: number;
   callFrequency: "minute" | "day";
-  mb?: number | null;
+  mb?: number | null | undefined;
 };
 
 const MILLION_CREDITS = 1_000_000;
